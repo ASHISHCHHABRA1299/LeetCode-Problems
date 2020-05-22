@@ -1,11 +1,12 @@
 package leetcode;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class FractionToRecurringDecimal {
 
 	public static void main(String[] args) {
-		int numerator = 2, denominator = 3;
+		int numerator = 1, denominator = 6;
 		if (numerator == 0) {
 			System.out.println("0");
 			return;
@@ -14,44 +15,32 @@ public class FractionToRecurringDecimal {
 			System.out.println(" ");
 			return;
 		}
-		String res = "";
+		StringBuilder res = new StringBuilder();
 		if (numerator < 0 || denominator < 0)
-			res += "-";
+			res.append("-");
 
-		long num = Math.abs((long) numerator), denom = Math.abs((long) denominator);
-		res += String.valueOf(num / denom);
-		long remainder = (num % denom) * 10;
+		long divisor = Math.abs((long) numerator);
+		long dividend = Math.abs((long) denominator);
+		long remainder = divisor % dividend;
+		res.append(divisor / dividend);
 		if (remainder == 0) {
-			System.out.println(res);
+			System.out.println(res.toString());
 			return;
 		}
-		res += ".";
-		HashMap<Long, Boolean> map = new HashMap<Long, Boolean>();
-		num = remainder * 10;
-		map.put(num / denom, true);
-		remainder = num % denom;
-		if (remainder == 0) {
-			res += String.valueOf(num / denom);
-			map.remove(num / denom);
-			System.out.println(res);
-			return;
-		} else {
-			res += "(";
-		}
-		while (!map.isEmpty()) {
-			remainder *= 10;
-			if (map.containsKey(remainder / denom)) {
-				res += String.valueOf(remainder / denom);
-				map.remove(remainder / denom);
-			} else {
-				map.put(remainder / denom, true);
-
+		res.append(".");
+		Map<Long, Integer> pos = new HashMap<Long, Integer>();
+		while (remainder != 0) {
+			if (pos.containsKey(remainder)) {
+				res.insert(pos.get(remainder), "(");
+				res.append(")");
+				break;
 			}
-			remainder = remainder % denom;
+			pos.put(remainder, res.length());
+			remainder *= 10;
+			res.append(remainder / dividend);
+			remainder %= dividend;
 		}
-		res += ")";
-
-		System.out.println(res);
+		System.out.println(res.toString());
 	}
 
 }
