@@ -1,14 +1,11 @@
 package leetcode;
 
-import java.util.Arrays;
-
 public class HouseRobber {
 
 	public static void main(String[] args) {
 
 		int[] nums = { 1, 2, 3, 1 };
 		int[] output = new int[nums.length];
-		Arrays.fill(output, -1);
 		int max = nums[0];
 		output[0] = nums[0];
 		for (int i = 1; i < output.length; i++) {
